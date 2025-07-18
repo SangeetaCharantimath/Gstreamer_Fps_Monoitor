@@ -1,0 +1,24 @@
+# Makefile for gstreamer-fps-monitor
+
+CC = gcc
+CFLAGS = -Wall `pkg-config --cflags gstreamer-1.0`
+LIBS = `pkg-config --libs gstreamer-1.0`
+TARGET = gstreamer_fps_monitor
+VIDEO = sample.mp4
+
+all: $(TARGET) check_video
+
+$(TARGET): main.c
+	$(CC) main.c -o $(TARGET) $(CFLAGS) $(LIBS)
+
+check_video:
+	@if [ ! -f "$(VIDEO)" ]; then \
+		echo "⚠️  Warning: '$(VIDEO)' not found. Please place a video file named 'sample.mp4' in this directory."; \
+	fi
+
+run: all
+	./$(TARGET) $(VIDEO)
+
+clean:
+	rm -f $(TARGET)
+
